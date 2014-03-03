@@ -5,6 +5,8 @@ public class PhysicsTest {
 
 	private double initialXPosition;		//starting horizontal position according to the screen
 	private double initialYPosition;		//starting vertical position according to the screen
+	private int initialVelocityX;			//velocity in x direction
+	private int initialVelocityY;			//velocity in y direction 
 	private double xPosition;				//current x position at time t
 	private double yPosition;				//current y position at time t
 	private double velocityX;				//current velocity in x direction at time t
@@ -21,7 +23,7 @@ public class PhysicsTest {
 	}
 	
 	public void setXPosition() {
-		xPosition = initialXPosition + ((accelerationX / 2) * (time * time));
+		xPosition = initialXPosition + (initialVelocityX * time) + ((accelerationX / 2) * (time * time));
 	}
 	
 	public double getYPosition() {
@@ -29,7 +31,7 @@ public class PhysicsTest {
 	}
 	
 	public void setYPosition() {
-		yPosition = initialYPosition + ((accelerationY /2) * (time * time));
+		yPosition = initialYPosition + (initialVelocityX * time) + ((accelerationY /2) * (time * time));
 	}
 	
 	public double getVX() {
@@ -37,7 +39,7 @@ public class PhysicsTest {
 	}
 	
 	public void setVX() {
-		velocityX = (accelerationX * time);
+		velocityX = initialVelocityX + (accelerationX * time);
 	}
 	
 	public double getVY() {
@@ -45,7 +47,7 @@ public class PhysicsTest {
 	}
 	
 	public void setVY() {
-		velocityY = (accelerationY * time);
+		velocityY = initialVelocityY +(accelerationY * time);
 	}
 	
 	public void setAccelerationX() {
@@ -68,6 +70,8 @@ public class PhysicsTest {
 			//reset/initialize values
 			test.initialXPosition = 0;
 			test.initialYPosition = 0;
+			test.initialVelocityX = 0;
+			test.initialVelocityY = 0;
 			test.velocityX = 0;
 			test.velocityY = 0;
 			force = 0;
