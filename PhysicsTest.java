@@ -3,20 +3,20 @@ import java.io.*;
 
 public class PhysicsTest {
 
-	private double initialXPosition;		//starting horizontal position according to the screen
-	private double initialYPosition;		//starting vertical position according to the screen
-	private int initialVelocityX;			//velocity in x direction
-	private int initialVelocityY;			//velocity in y direction 
-	private double xPosition;				//current x position at time t
-	private double yPosition;				//current y position at time t
-	private double velocityX;				//current velocity in x direction at time t
-	private double velocityY;				//current velocity in y direction at time t
-	private double accelerationX;			//calculated acceleration based on component of force applied in x 
-	private double accelerationY;			//calculated acceleration based on component of force applied in y
-	private static double force;			//magnitude of force applied to object	
-	private static double theta;			//angle the force is applied
-	private static int mass = 1;			//mass of object in kg
-	private static int time;				//time elapsed
+	private double initialXPosition;	//starting horizontal position according to the screen
+	private double initialYPosition;	//starting vertical position according to the screen
+	private int initialVelocityX;		//velocity in x direction
+	private int initialVelocityY;		//velocity in y direction 
+	private double xPosition;			//current x position at time t
+	private double yPosition;			//current y position at time t
+	private double velocityX;			//current velocity in x direction at time t
+	private double velocityY;			//current velocity in y direction at time t
+	private double accelerationX;		//calculated acceleration based on component of force applied in x 
+	private double accelerationY;		//calculated acceleration based on component of force applied in y
+	private double force;				//magnitude of force applied to object	
+	private double theta;				//angle the force is applied
+	private int mass = 1;				//mass of object set to 1 for convenience
+	private int time;					//time in seconds obect is in motion
 	
 	public double getXPosition() {
 		return Math.round(xPosition);
@@ -74,13 +74,13 @@ public class PhysicsTest {
 			test.initialVelocityY = 0;
 			test.velocityX = 0;
 			test.velocityY = 0;
-			force = 0;
-			theta = 0;
-			time = 0;
+			test.force = 0;
+			test.theta = 0;
+			test.time = 0;
 			System.out.println("Enter force:");
-			force = sc.nextDouble();
+			test.force = sc.nextDouble();
 			System.out.println("Enter angle in radians");
-			theta = sc.nextDouble();
+			test.theta = sc.nextDouble();
 			//compute the acceleration from the given force and angle
 			test.setAccelerationX();
 			test.setAccelerationY();
