@@ -1,0 +1,36 @@
+
+svg {
+	
+	margin-bottom: -8px;
+	border-bottom: 4px solid #000;
+	
+	width:100%;
+	}
+	
+.ball {
+	border: 4px solid black;
+	border-bottom-right-radius: 50%;
+	border-bottom-left-radius: 50%;
+	border-top-right-radius: 50%;
+	border-top-left-radius: 50%;
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	}
+	
+.line{
+	width: 16px;
+	height: 16px;
+	background-color: black;
+	margin-top: 3em;
+	}
+	
+#container{
+	height: 400px;
+	position: relative;
+	border-bottom: 4px solid black;
+	}
+#controls{
+	position: relative;
+	
+	}
