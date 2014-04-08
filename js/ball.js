@@ -1,18 +1,22 @@
 var Ball = {};
-var time = 0;
-var timeStep = .01;
+var t = 0;
+var timeStep = 10;
 //General properties and methods for ball
 Ball.createBall = (function () {
-	var g = -1;		//acceleration due to gravity
-	var vx = 16; //parseInt($('#velocity').val(), 10);		//initial horizontal velocity
-	var vy = 16;		//initial vertical velocity
+	var g = 1;		//acceleration due to gravity
+	var vxi = 30; 	//initial horizontal velocity
+	var vyi = -10;	//initial vertical velocity
+	var vx;
+	var vy;
+	var xi = 0;
+	var yi = 0;
 	var x = 0;
 	var y = 0;
 	
 	var ball = $('.ball');
 	
 	var setX = function (xi) {
-		//this.x = xi;
+		this.xi = xi;
 		ball.css("left", xi);
 	}
 	
@@ -22,7 +26,7 @@ Ball.createBall = (function () {
 	}
 	
 	var setY = function (yi) {
-		//this.y = yi;
+		this.yi = yi;
 		ball.css("top", yi);
 	}
 	
@@ -32,47 +36,44 @@ Ball.createBall = (function () {
 	}
 	
 	var setVX = function (vxi) {
-		this.vx = vxi;
+		this.vxi = vxi;
 	}
 	
 	var getVX = function () {
-		return this.vx;
+		return this.vxi;
 	}
 	
 	var setVY = function (vyi) {
-		this.vy = vyi;
+		this.vyi = vyi;
 	}
 	
 	var getVY = function () {
-		return this.vy;
+		return this.vyi;
 	}
 	
 	var animate = function () {
-		x = parseInt(ball.css("left"), 10);
-        var newX = x + vx;
-		y = parseInt(ball.css("top"), 10);
-		vy += g;	//this is not getting the parsed value of vy
-		var newY = y + vy;
-		 if(newX >= 1000 || newX <= 0) {
-            vx *= -1;
+		t += 1;
+		xi = parseInt(ball.css("left"), 10);
+        x += vxi;
+		yi = parseInt(ball.css("top"), 10);
+		y = yi + (vyi * t) + (.5 * g * t * t);	//this is not getting the parsed value of vy
+		 if (y >= 250) {
+			y = 250;
 			clearInterval(timer);
-			timer = null;
 			$('#btnStartStop').text('Start Animation');
-        }
-
-			console.log("vy:"+ vy);
+            timer = null;
+		}
+		$('#line1').css("width", "+=" + vxi);
+		setX(x);
+		setY(y);
 		
-		$('#line1').css("width", "+=" + vx);
-		setX(newX);
-		setY(newY);
-	
 		console.log(getX() + " " + getY());
 	}
 	
 	var timer = null;
 	var startStopAnimation = function () {
 		if(timer == null) {
-			timer = setInterval(animate, timeStep);
+			timer = setInterval(animate, 30);
 			$('#btnStartStop').text('Stop Animation');
 		} else {
             clearInterval(timer);
