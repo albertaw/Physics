@@ -5,7 +5,7 @@ var timeStep = 10;
 Ball.createBall = (function () {
 	var g = 1;		//acceleration due to gravity
 	var vxi = 30; 	//initial horizontal velocity
-	var vyi = -10;	//initial vertical velocity
+	var vyi = -5;	//initial vertical velocity
 	var vx;
 	var vy;
 	var xi = 0;
@@ -57,8 +57,8 @@ Ball.createBall = (function () {
         x += vxi;
 		yi = parseInt(ball.css("top"), 10);
 		y = yi + (vyi * t) + (.5 * g * t * t);	//this is not getting the parsed value of vy
-		 if (y >= 250) {
-			y = 250;
+		 if (y >= 350) {
+			y = 350;
 			clearInterval(timer);
 			$('#btnStartStop').text('Start Animation');
             timer = null;
@@ -106,7 +106,7 @@ $(document).ready(function () {
 	//alert("hello");
 	var newBall = Ball.createBall;
 	newBall.setX(0);
-	newBall.setY(250);
+	newBall.setY(350);
 	newBall.setVX(parseInt($('#vx').val(), 10)); //this isn't parsing
 	newBall.setVY(parseInt($('#vy').val(), 10)); //this isn't parsing
 	console.log(newBall.getVX() + " " + newBall.getVY());
