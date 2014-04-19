@@ -1,9 +1,6 @@
-var Ball = {};
 
-//General properties and methods for ball
-Ball.createBall = (function () {
 	var g = 1;		//acceleration due to gravity
-	var vx = 8; 	//initial horizontal velocity
+	var vx = 0; 	//initial horizontal velocity
 	var vy = 0;		//initial vertical velocity
 	var x = 0;
 	var y = 0;
@@ -77,7 +74,8 @@ Ball.createBall = (function () {
 		
 		//if ball hits ground
 		if (newY >= 425) {	//position of ground - the radius of the ball
-			vy *= -.8;	//reverse the velocity and reduce speed
+			setY(400)
+			setVY(0);
 			//setY(newY);
 			console.log("vy"+ vy);
 		}
@@ -85,7 +83,6 @@ Ball.createBall = (function () {
 		//line.setAttribute('x2', newX2Pos);
 		setX(newX);
 		setY(newY);
-	
 		console.log(getX() + " " + getY());
 	}
 	
@@ -100,44 +97,19 @@ Ball.createBall = (function () {
             timer = null;
         }
 	}
-	
-	return {
-	
-		setStrokeStyle: setStrokeStyle,
-		setStrokeWidth: setStrokeWidth,
-		setFillColor: setFillColor,
-		setX: setX,
-		getX: getX,
-		setY: setY,
-		getY: getY,
-		setVX: setVX,
-		getVX: getVX,
-		setVY: setVY,
-		getVY: getVY,
-		startStopAnimation: startStopAnimation
-		
-	}
-	
-})();
-
-Ball.physics = (function () {
-	
-	
-})();
 
 $(document).ready(function () {
-	//alert("hello");
-	var newBall = Ball.createBall;
-	newBall.setStrokeStyle("#000");
-	newBall.setStrokeWidth(8);
-	newBall.setFillColor("#fff");
-	newBall.setX(75);
-	newBall.setY(425);
-	newBall.setVX(parseInt($('#vx').val(), 10)); //this isn't parsing
-	newBall.setVY(parseInt($('#vy').val(), 10)); //this isn't parsing
-	console.log(newBall.getVX() + " " + newBall.getVY());
+
+	setStrokeStyle("purple");
+	setFillColor("#fff");
+	setStrokeWidth("4");
+	setX(75);
+	setY(425);
+	setVX(parseInt($('#vx').val(), 10)); //this isn't parsing
+	setVY(parseInt($('#vy').val(), 10)); //this isn't parsing
+	console.log(getVX() + " " + getVY());
 	$('#btnStartStop').click(function () {
-		newBall.startStopAnimation();
+		startStopAnimation();
 
 	});
 	

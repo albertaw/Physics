@@ -4,10 +4,10 @@ var timeStep = 10;
 //General properties and methods for ball
 Ball.createBall = (function () {
 	var g = 1;		//acceleration due to gravity
-	var vxi = 30; 	//initial horizontal velocity
-	var vyi = -5;	//initial vertical velocity
-	var vx;
-	var vy;
+	var vxi = 0; 	//initial horizontal velocity
+	var vyi = 0;	//initial vertical velocity
+	var vx = 0;
+	var vy = 0;
 	var xi = 0;
 	var yi = 0;
 	var x = 0;
@@ -107,8 +107,8 @@ $(document).ready(function () {
 	var newBall = Ball.createBall;
 	newBall.setX(0);
 	newBall.setY(350);
-	newBall.setVX(parseInt($('#vx').val(), 10)); //this isn't parsing
-	newBall.setVY(parseInt($('#vy').val(), 10)); //this isn't parsing
+	newBall.setVX(10); //this isn't parsing
+	newBall.setVY(10); //this isn't parsing
 	console.log(newBall.getVX() + " " + newBall.getVY());
 	$('#btnStartStop').click(function () {
 		newBall.startStopAnimation();
