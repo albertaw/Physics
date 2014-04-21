@@ -6,17 +6,30 @@
 
 <head>
 <body>
+	<!--------------------Header------------------------->
+	<nav id="header" class=" navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div id="nav-title" class="navbar-brand">Physics Simulation</div>
+			<form class="navbar-form navbar-right">
+				<div class="form-group">
+					<input id="vx" class="form-control" type="number" placeholder="x velocity">
+					<div id="btn-plus-vx" class="btn btn-default btn-plus">+</div>
+					<div id="btn-minus-vx" class="btn btn-default btn-minus">-</div>
+					<input id="vy" class="form-control" type="number" placeholder="y velocity">
+					<div id="btn-plus-vy" class="btn btn-default btn-plus">+</div>
+					<div id="btn-minus-vy" class="btn btn-default btn-minus">-</div>
+					<div id="btnStartStop" class="btn btn-default">Start Animation</div>
+					<div id="btnReset" class="btn btn-default">Reset</div>
+				</div>
+			</form>
+		</div>
+	</nav><!---------------END HEADER------------------->
 	
-	<div id="main">
-		<h1>Physics Simulation</h1>
-		<div><button id="btnStartStop">Start Animation</button><button id="btnReset">Reset</button></div>
+		<!-----------------Game Canvas-------------------->
 		<svg id="graph" width="100%" height="400">
-			<circle id="circle"  cx="20" cy="380" r="20" stroke-width="4" />
+			<circle id="circle"  cx="80" cy="312" r="80" stroke-width="4" fill="white" stroke="black" />
 		</svg>
-		<h1>Energy</h1>
-		<svg id="energy-graph" width="100%" height="200">
-			
-		</svg>
+		<!--
 		
 		<div id="data">
 			<h1>Data</h1>
@@ -42,26 +55,23 @@
 			</table>
 		
 		</div>
-		<!--
-			
 		
-		<div id="controls">
+				<h1>Energy</h1>
+		<svg id="energy-graph" width="100%" height="200">
 			
-			<label for="vx"><h2>Velocity x</h2></label>
-			<input type="text" id="vx">
-			<label for="vy"><h2>Velocity y</h2></label>
-			<input type="text" id="vy">
-			
-		</div>
-		<svg id="line1" class="line" width="100%" height="">
-			 <line x1="0" x2="0" y1="0" y2="0" style="stroke:black;stroke-width:4" />
 		</svg>
 		
-		<script src="js/Chart.js"></script>
-		<script src="js/scripts.js"></script>
+		
+
 	-->
 		<script src="js/jquery.js"></script>
 		<script src="js/RK4.js"></script>
+		<script src="js/Physics.world.js"></script>
+		<script src="js/Physics.particle.js"></script>
+		<script src="js/Physics.timer.js"></script>
+		<script src="js/Physics.screen.js"></script>
+		<script src="js/Physics.controller.js"></script>
+		<script src="js/index.js"></script>
 	</div>
 </body>
 </html>
