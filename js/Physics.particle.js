@@ -8,179 +8,190 @@
  * Initial velocity is input by the user which may be derived from a specified force at a
  * specified angle. Also handles collision detection. 
  * Example use: 
- * 1. instantiation: var p = new Particle(1, 2, 3, 4) or Physics.particle.createParticle();
+ * 1. instantiation: var p = new Physics.Particle(1, 2, 3, 4) 
  * 2. creating a timer: var mover = new Physics.timer(this) particle.start()
  *
  */
 
-//Particle = (function () {
+ var Physics = {};
+ 
+ Physics.Particle = (function () {
 	
-	var x, x2, x3, x4, y, y2, y3, y4;  	//value used in 2nd step of RK4 calculations
-	var vx, vx2, vx3, vx4, vy, vy2, vy3, vy4;		//velocities used in 2nd step of RK4 calculations
-	var ax, ax2, ax3, ax4, ay, ay2, ay3, ay4;		//acceleration used for steps 1-4 in RK4
-	var mass = 1;		//default to 1 for easy computation.  Should be initialized in constructor.
-	var energy;			//kinetic energy at any time interval
-	var millisecondsPerFrame = 40;
-	var radius = 80;
-	var circle = document.getElementById("circle");
-	/*******************************************
-	 * 			GETTERS AND SETTERS
-	 ******************************************/
+	//private static attribute initialized to -1 so that the first id will be 0 
+	//var nextID = -1;	
 	
-	//Big Decimal class used to format numbers to 2 decimal places for consistency
-	function getX() {
-		return Math.round(x);
-	}
-	
-	function setX(xi) {
-		this.x = xi;
-		circle.setAttribute("cx", xi);
-	}
-	
-	function getY() {
-		return Math.round(y);
-	}
-	
-	function setY(yi) {
-		this.y = yi;
-		circle.setAttribute("cy", yi);
-	}
-	
-	function getVx() {
-		return Math.round(vx);
-	}
-	
-	function setVx(vxi) {
-		this.vx = vxi;
-	}
-	
-	function getVy() {
-		return Math.round(vy);
-	}
-	
-	function setVy(vyi) {
-		this.vy = vyi;
-	}
-	
-	function getDt() {
-		return dt;
-	}
-	
-	function getEnergy() {
-		return Math.round(energy);
-	}
-	
+	//private static helper method to generate random numbers for setting x and y position
+	var randomX = function () {
+		var maxX = Physics.World.getWidth() - 80;
+		var x = Math.floor(Math.random() * maxX);	//find a number between the length of the radius and wall
+		if(x < 80) {		//if in collision with left edge
+			x = 80;				//reposition to left edge
+		}
+		return x;
+	};
 
-	/**
-	 * Calculates the sum of forces acting on the particle during a given time
-	 * interval in the x direction and computes acceleration using Newton's Second
-	 * law Fnet = ma. Forces could include friction, spring, drag, thrust.  
-	 * 
-	 * @param x position
-	 * @param vx velocity
-	 * @return x component of acceleration
-	 */
-	function getAx(x, vx) {
-		 return 0;	//default to zero since I am not accounting for any other force
-	}
-	
-	/**
-	 * Calculates sum of forces acting on the particle in the y direction using Fnet = ma
-	 * Forces could include weight, lift, Buoyant force.
-	 * 
-	 * @param y position
-	 * @param vy velocity
-	 * @return y component of acceleration
-	 */
-	function getAy(y, vy){
-		
-		return 0;
-	}
-	
-	
-	/**
-	 * calculates total mechanical energy at any given time interval using 1/2 m v^2 + mgh 
-	 * where m = mass, v = velocity, g = gravity, and h = height or the y value.
-	 */
-	function calcEnergy() {
-		//find the magnitude of the velocity 
-		var v = Math.sqrt(vx * vx + vy * vy);
-		
-		//E = K + U
-		energy = (.5 * mass * Math.pow(v, 2)) + (mass * Physics.world.getG() * -1 * y); //multiply by -1 because gravity and height are opposites
-	}
-	 
-	
-	/**
-	 * Detects if a particle is in contact or outside the boundaries of the "world".
-	 * Sets particle's positin to the floor, ceiling, or wall position if in contact.
-	 */
-	function checkBoundaries() {
-		
-		if(y >= Physics.world.getHeight() - radius) {	//if in collision with bottom edge
-			y = Physics.world.getHeight() - radius;		//reposition to edge of floor
-			vy *= -.8;		//reverse the particle's velocity
-        } else if(y <= radius) {	//if in collision with ceiling
-			y = radius;		//reposition to top edge
-			vy *= -.8;		//reverse the particle's velocity
+	var randomY = function () {
+		var maxY = Physics.World.getHeight() - 80;
+		var y = Math.floor(Math.random() * maxY);
+		if(y < 80) {	//if in collision with ceiling
+			y = 80;
 		}
-		if(x >= Physics.world.getWidth() - radius) { //if in collision with right edge of wall
-			x = Physics.world.getWidth() - radius;	//reposition to right edge of wall
-			vx *= -.8;		//reverse the particle's velocity
-		} else if(x <= radius) {		//if in collision with left edge
-			x = radius;		//reposition to left edge
-			vx *= -.8;		//reverse particle's velocity
+		return y;
+	};
+	
+	//constructor to create new particles
+	return function () {
+		//private attributes 
+		var x, y, vx, vy;
+		var mass = 1;		//default to 1 for easy computation.  Should be initialized in constructor.
+		var radius = 80;	
+		var energy;			//kinetic energy at any time interval
+		var skipUpdate;		//used if the particle is stationary and not on path to a collision
+		var skipDraw;
+		var id;
+		//create a circle svg element
+		var svgns = "http://www.w3.org/2000/svg" ;
+		//var circle = document.createElementNS(svgns, 'circle');
+		var circleID;
+			
+		this.getX = function () {
+			return Math.round(this.x);
+		};
+		
+		this.setX = function (xi) {
+			this.x = xi;	//update variable for calculations
+			//circle.setAttribute("cx", xi);	//update location on screen
+		};
+		
+		this.getY = function () {
+			return Math.round(this.y);
+		};
+		
+		this.setY = function (yi) {
+			this.y = yi;
+			//circle.setAttribute("cy", yi);
+		};
+		
+		this.getVx = function () {
+			return Math.round(this.vx);
+		};
+		
+		this.setVx = function(vxi) {
+			this.vx = vxi;
+		};
+		
+		this.getVy = function () {
+			return Math.round(this.vy);
+		};
+		
+		this.setVy = function (vyi) {
+			this.vy = vyi;
+		};
+		
+		this.getRadius = function () {
+			return radius;
+		};
+		
+		this.setRadius = function (r) {
+			this.radius = r;
+		};
+		
+		this.getEnergy = function () {
+			return Math.round(this.energy);
+		};
+		
+		this.getID = function () {
+			return this.id;
 		}
 		
-		//stopping condition
-		if(vx < 4 || vy < 4) {
-			stopAnimation();
-		}
+		this.setID = function (idNum) {
+			this.id = idNum;
+		};
 		
-	}
-	 
-	var energyXPos = 0;
-	function graphEnergy() {
+		this.getCircleID = function () {
+			return this.circleID;
+		};
 		
-		//plot the energy
-		/*
-		var energyYPos = 100 + .001 * energy; //plot the energy from a baseline of 150 or  n px
-		var rect = document.createElementNS(svgns, 'rect');
-		rect.setAttribute("class", "temp");
-		rect.setAttribute("width", 20);
-		rect.setAttribute("height", 20);
-		rect.setAttribute("x", energyXPos);
-		rect.setAttribute("y", energyYPos);
-		$('#energy-graph').append(rect);
-		energyXPos += 10;
-		*/
+		//calculates total mechanical energy at any given time interval using 1/2 m v^2 + mgh 
+		//where m = mass, v = velocity, g = gravity, and h = height or the y value.
+		this.calcEnergy = function () {
+			//find the magnitude of the velocity 
+			var v = Math.sqrt(vx * vx + vy * vy);
+			
+			//Energy = Kinetic Energy + Potential Energy
+			energy = (.5 * mass * Math.pow(v, 2)) + (mass * Physics.World.getG() * -1 * y); //multiply by -1 because gravity and height are opposites
+		};
 		
-	}
-	
-	function printData() {
-		//$('#time').text(getDt());
-		//$('#x-pos').text(getX());
-		//$('#y-pos').text(380 - getY());	//subtract current y position from starting y position
-		$('#vx').text(getVx());
-		$('#vy').text(getVy());
-		//$('#energy').text(getEnergy());
-	
-	}
-	
-	/**
-	 * Calculations to run every frame/interval to update the position of the particle,
-	 * update the game world and do timekeeping.
-	 */
-	function move() {
-		calcElapsedTime();
-		calcEnergy();		
-		calcRK4();
-		checkBoundaries();
-		setX(getX());
-		setY(getY());
-		printData();
+		//deallocates particle from memory, removes element from world
+		this.destroy = function () {
+			var circle = document.getElementById(this.circleID);
+			document.getElementById('world').removeChild(circle);
+		};
 		
-	}
+		//takes a particle object and updates position and velocity using specified scheme, 
+		this.move = function () {
+			Physics.RK4.calcRK4(this);
+			//console.log("I moved");
+		};
+		
+		//initializes particle properties and draws it
+		this.init = function () {
+			this.x = randomX();
+			this.y = randomY();
+			this.vx = 0;
+			this.vy = 0;
+			//this.setID(nextID);
+			this.draw();
+			//console.log("particle initialized");
+		};
+		
+		//visualizes particle as a circle on the screen
+		this.draw = function () {
+			//set the circle's attributes to the particle's attributes
+			var circle = document.createElementNS(svgns, 'circle');
+			circle.setAttribute('cx', this.getX());
+			circle.setAttribute('cy', this.getY());
+			circle.setAttribute('r', this.getRadius());
+			circle.setAttribute('stroke', 'black');
+			circle.setAttribute('stroke-width', 4);
+			circle.style.fill = "white";
+			//add an id to the circle so that it can be called by id
+			this.circleID = "circle" + this.id;
+			circle.setAttribute('id', this.circleID);
+			circle.setAttribute('class', "circle");
+			//add the circle to the svg canvas
+			document.getElementById("world").appendChild(circle);
+		};
+		
+		// draws object, updates momentum and energy on every keyframe or when 
+		//setting object prior to animating, or when refreshing.  
+		this.update = function () {
+			
+			document.getElementById(this.circleID).setAttribute('cx', this.getX());
+			document.getElementById(this.circleID).setAttribute('cy', this.getY());
+			this.calcEnergy();
+			//stopping condition
+			//when energy is below n stop the animation.
+			//if(getEnergy() < 50) {
+				//vx = 0, vy = 0
+			//}
+		};
+		
+		//calls particle’s destroy method. Term “cleanup” used for convenience and consistency
+		//in order to iterate over the cleanup method of all objects and managers
+		this.cleanup = function () {
+			this.destroy();
+		};
+		
+		//this.x = newX;
+		//this.y = newY;
+		//this.vx = newVx;
+		//this.vy = newVy;
+		//nextID++;	//will increment when object is instantiated.  
+		
+	};//end function
 	
 	
 	
+})();	
+

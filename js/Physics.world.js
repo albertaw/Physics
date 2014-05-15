@@ -7,63 +7,67 @@
  * 1. adding objects to the world: Physics.world.add(new Particle())
  */
 
-var Physics = {};
-
-Physics.world = (function () {
+ 
+Physics.World = (function () {
 
 	var height;	//ground level of screen with origin at top left corner 
 	var width;
-	var g = 0;			//force of gravity, downward is positive relative to computer screen
-	var friction;
-	var objects;
+	var g;			//force of gravity, downward is positive relative to computer screen
+	var world = document.getElementById("world");
+	
+	
+	var	getHeight = function () {
+		this.height = $(window).height() - $('#header').height();
+		return this.height;
+	};
+	
+	//should always be 100%
+	var	getWidth = function () {
+		this.width = $(window).width();
+		return this.width;
+	};
 
+	var	getG = function () {
+		return this.g;
+	};
+
+	var	setG = function (g) {
+		this.g = g;
+	};
+
+	var init = function () {
+		this.g = 0;
+		this.friction = 0;
+		this.draw();
+
+	};
+		
+	var	draw = function () {
+		//set style elements
+		world.setAttribute("width", "100%");
+		world.setAttribute("height", getHeight());
+	};
+		
+	var	update = function () {
+		this.draw();
+	};
+		
+	var	cleanup = function () {
+		
+	};
+	
 	return {
-		getHeight: function () {
-			return height;
-		},
 
-		setHeight: function () {
-			height = $(window).height();
-		},
-
-		getWidth: function () {
-			return width;
-		},
-
-		setWidth: function () {
-			width = $(window).width() - 16;  //find out how to get rid of scroll bar and get the dimensions based on compter window size
-		},
-
-		getG: function () {
-			return g;
-		},
-
-		setG: function (g) {
-			this.g = g;
-		},
-
-		getFriction: function () {
-			return friction;
-		},
-
-		setFriction: function (f) {
-			this.friciton = f;
-		},
-
-		add: function () {},
-		remove: function () {},
-		getObject: function () {},
-
-		init: function () {
-			//render the canvas
-			this.setHeight();
-			this.setWidth();
-			var canvas = document.getElementById("graph");
-			graph.setAttribute("width", "100%");
-			graph.setAttribute("height", this.getHeight());
-			//particle
-			setX(this.getWidth() / 2);
-			setY(this.getHeight() / 2);
-		}
+		getHeight: getHeight,
+		getWidth: getWidth,
+		getG: getG,
+		setG: setG,
+		init: init,
+		draw: draw,
+		update: update,
+		cleanup: cleanup
+		
 	}
 })();
+
+

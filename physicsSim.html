@@ -1,77 +1,124 @@
 <!Doctype HTML>
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap3.1.1.css">
+	<link rel="stylesheet" type="text/css" href="css/physics.css">
 
-<head>
+</head>
 <body>
-	<!--------------------Header------------------------->
-	<nav id="header" class=" navbar-inverse navbar-fixed-top">
+	<!-- ------------------Header----------------------- -->
+	<nav id="header" class=" navbar-inverse navbar-static-top">
 		<div class="container">
-			<div id="nav-title" class="navbar-brand">Physics Simulation</div>
+			<div id="nav-title" class="navbar-brand">Physics Simulator</div>
 			<form class="navbar-form navbar-right">
 				<div class="form-group">
-					<input id="vx" class="form-control" type="number" placeholder="x velocity">
+					<label for="vx">VX</label>
+					<input id="vx" class="form-control" type="text" value="0" readonly>
 					<div id="btn-plus-vx" class="btn btn-default btn-plus">+</div>
 					<div id="btn-minus-vx" class="btn btn-default btn-minus">-</div>
-					<input id="vy" class="form-control" type="number" placeholder="y velocity">
+					<label for="vy">VY</label>
+					<input id="vy" class="form-control" type="text" value="0" readonly>
 					<div id="btn-plus-vy" class="btn btn-default btn-plus">+</div>
 					<div id="btn-minus-vy" class="btn btn-default btn-minus">-</div>
-					<div id="btnStartStop" class="btn btn-default">Start Animation</div>
-					<div id="btnReset" class="btn btn-default">Reset</div>
+					<img id="btnStartStop" src="img/play.png">
+					<div id="add" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></div>
+					<div id="remove" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></div>
 				</div>
 			</form>
 		</div>
-	</nav><!---------------END HEADER------------------->
+	</nav><!-- -------------END HEADER----------------- -->
 	
-		<!-----------------Game Canvas-------------------->
-		<svg id="graph" width="100%" height="400">
-			<circle id="circle"  cx="80" cy="312" r="80" stroke-width="4" fill="white" stroke="black" />
-		</svg>
-		<!--
-		
-		<div id="data">
-			<h1>Data</h1>
+		<!-- ---------------Game Canvas------------------ -->
+		<svg id="world" width="100%"  >
 			
-			<table id="data-points">
-				<thead>
-					<th><h1>Time</h1></th>
-					<th><h1>X Pos</h1></th>
-					<th><h1>Y Pos</h1></th>
-					<th><h1>VX</h1></th>
-					<th><h1>VY</h1></th>
-					<th><h1>Energy</h1></th>
-					<tr>
-						<td id="time">0</td>
-						<td id="x-pos">0</td>
-						<td id="y-pos">0</td>
-						<td id="vx">0</td>
-						<td id="vy">0</td>
-						<td id="energy">0</td>
-					</tr>
-				</thead>
-				
-			</table>
-		
-		</div>
-		
-				<h1>Energy</h1>
-		<svg id="energy-graph" width="100%" height="200">
-			
+			<!--<circle id="circle"  cx="80" cy="316" r="80" stroke-width="4" fill="white" stroke="black" />-->
 		</svg>
 		
-		
-
-	-->
 		<script src="js/jquery.js"></script>
-		<script src="js/RK4.js"></script>
-		<script src="js/Physics.world.js"></script>
-		<script src="js/Physics.particle.js"></script>
-		<script src="js/Physics.timer.js"></script>
-		<script src="js/Physics.screen.js"></script>
-		<script src="js/Physics.controller.js"></script>
-		<script src="js/index.js"></script>
-	</div>
+		<script src="js/bootstrap.js"></script>
+		
+		<script src="js/Physics.Particle.js"></script>
+		<script src="js/Physics.RK4.js"></script>
+		
+		<script src="js/Physics.CollisionManager.js"></script>
+		<script src="js/Physics.InputManager.js"></script>
+		<script src="js/Physics.ParticleManager.js"></script>
+		<script src="js/Physics.World.js"></script>
+		<script src="js/Physics.Timer.js"></script>
+		<script>
+		
+			Physics.InputManager.init();
+			Physics.ParticleManager.init();
+			Physics.World.init();
+			//Physics.Timer.init();
+		/*
+			var clicked = false;
+			var oldX;
+			var oldY;
+			var newX;
+			var newY;
+			var dx;
+			var dy;
+			var offset;
+			var dragstart = function (e) {
+				//onmousedown get the position of the cursor
+				offset = $(this).offset();
+				relativeX = (e.pageX - offset.left);
+				relativeY = (e.pageY - offset.top);
+
+				console.log("X: " + relativeX + "  Y: " + relativeY);
+				clicked = true;
+			};
+			
+			var drag = function (e) {
+				//onmousemove update the position to
+				//current position + the change in position 
+				//which is the position of the cursor - the position at ondragstart
+				//evt.preventDefault();
+				if(clicked){
+					dx = e.target.getAttribute("cx") + (relativeX + e.pageX);
+					dy = e.target.getAttribute("cy") + (relativeY + e.pageY);
+
+					e.target.setAttribute("left", dx);
+					e.target.setAttribute("top", dy);
+				}
+			};
+			var drop = function (evt) {
+				//onmouseup set clicked = false
+				clicked = false;
+			};
+			
+			$('#circle').click(function () {
+				//offset = $(this).offset();
+				//oldX = (e.pageX - offset.left);
+				//oldY = (e.pageY - offset.top);
+
+				console.log("X: ");
+				clicked = true;
+			});
+			$('#circle').mousemove(function (e) {
+				if(clicked){
+				
+					
+					newX = (e.pageX - offset.left);
+					newY = (e.pageY - offset.top);
+					dx = newX - oldX;
+					dy = newY - oldY;
+					console.log("dx: " + dx + "  dy: " + dy);
+					//var x = $('#square').css("left") + dx;
+					//var y = $('#square').css("top") + dy;
+					//$('#square').css("left", x);
+					//$('#square').css("top", y);
+					//e.target.setAttribute("top", y);
+				}
+			});
+			$('#circle').mouseup(function (e) {
+				clicked = false;
+				oldX = newX;
+				oldY = newY;
+			});
+		*/
+		</script>
 </body>
 </html>
