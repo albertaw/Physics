@@ -11,6 +11,7 @@ Physics.ParticleManager = (function () {
 		particle.setID(nextID);	//set first so the circle id can be set?
 		particle.init();
 		particles[particle.getID()] = particle;
+		console.log("ball " + particles[particle.getID()].getID() + " added");
 		nextID++;
 	};
 	
@@ -90,29 +91,32 @@ Physics.ParticleManager = (function () {
 	//[2][3], [2][wall]
 	//[3][wall]
 	var update = function () {
-		
+		//updtate change in time 
+		Physics.Timer.calcElapsedTime();
 		//calculate next position
 		for (var id in particles) {
 			particles[id].move();	
 		}	
-		//cache size of particle dictionary
-		//var length = length();		
 		
-		//detect collision
+		//detect collisions
 		for (var i = 0; i < length(); i++) {
-			//check single ball for ball wall collision
+			//check each ball for wall collision
 			Physics.CollisionManager.resolveBallFixedPointCollision(particles[i]);	
 			this.numChecks++;
-			//check ball pairs for collision
+			//check each ball pair for collision
 			for (var j = i+1; j < length(); j++) {	
 				Physics.CollisionManager.resolveBallToBallCollision(particles[i], particles[j]);
 				this.numChecks++;
 			}
 		}
-		//redraw objects on screen
+		//reposition objects on screen
 		for (var id in particles) {
 			particles[id].update();		
 		}
+		
+		//calculate energy in system 
+		
+		//log data
 		
 	};
 	

@@ -43,15 +43,13 @@
 	return function () {
 		//private attributes 
 		var x, y, vx, vy;
-		var mass = 1;		//default to 1 for easy computation.  Should be initialized in constructor.
-		var radius = 80;	
+		var mass;		//default to 1 for easy computation.  Should be initialized in constructor.
+		var radius;	
 		var energy;			//kinetic energy at any time interval
-		var skipUpdate;		//used if the particle is stationary and not on path to a collision
+		var skipUpdate;		//used if the particle is stationary 
 		var skipDraw;
 		var id;
-		//create a circle svg element
-		var svgns = "http://www.w3.org/2000/svg" ;
-		//var circle = document.createElementNS(svgns, 'circle');
+		var svgns = "http://www.w3.org/2000/svg";	//svg namespace for initializing circles
 		var circleID;
 			
 		this.getX = function () {
@@ -60,7 +58,6 @@
 		
 		this.setX = function (xi) {
 			this.x = xi;	//update variable for calculations
-			//circle.setAttribute("cx", xi);	//update location on screen
 		};
 		
 		this.getY = function () {
@@ -69,7 +66,6 @@
 		
 		this.setY = function (yi) {
 			this.y = yi;
-			//circle.setAttribute("cy", yi);
 		};
 		
 		this.getVx = function () {
@@ -89,7 +85,7 @@
 		};
 		
 		this.getRadius = function () {
-			return radius;
+			return this.radius;
 		};
 		
 		this.setRadius = function (r) {
@@ -116,10 +112,10 @@
 		//where m = mass, v = velocity, g = gravity, and h = height or the y value.
 		this.calcEnergy = function () {
 			//find the magnitude of the velocity 
-			var v = Math.sqrt(vx * vx + vy * vy);
+			var v = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
 			
 			//Energy = Kinetic Energy + Potential Energy
-			energy = (.5 * mass * Math.pow(v, 2)) + (mass * Physics.World.getG() * -1 * y); //multiply by -1 because gravity and height are opposites
+			this.energy = (.5 * this.mass * Math.pow(v, 2)) + (this.mass * Physics.World.getG() * -1 * this.y); //multiply by -1 because gravity and height are opposites
 		};
 		
 		//deallocates particle from memory, removes element from world
@@ -138,8 +134,10 @@
 		this.init = function () {
 			this.x = randomX();
 			this.y = randomY();
+			console.log("x:" + this.getX() + " y:" + this.getY());
 			this.vx = 0;
 			this.vy = 0;
+			this.radius = 80;
 			//this.setID(nextID);
 			this.draw();
 			//console.log("particle initialized");
@@ -169,7 +167,9 @@
 			
 			document.getElementById(this.circleID).setAttribute('cx', this.getX());
 			document.getElementById(this.circleID).setAttribute('cy', this.getY());
-			this.calcEnergy();
+			console.log("x:" + this.getX() + " y:" + this.getY());
+			console.log("vx:" + this.getVx() + " vy:" + this.getVy());
+			//this.calcEnergy();
 			//stopping condition
 			//when energy is below n stop the animation.
 			//if(getEnergy() < 50) {

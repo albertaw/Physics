@@ -63,6 +63,7 @@
 	
 	return {
 		setTime: setTime,
+		calcElapsedTime: calcElapsedTime,
 		start: start,
 		stop: stop,
 		getDt: getDt,
