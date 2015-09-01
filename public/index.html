@@ -1,0 +1,68 @@
+<!Doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- MOBILE RESPONSIVENESS -->
+		<meta name="viewport" content="width=device-width, initial-scale=1,  user-scalable=no">	
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
+		
+		<title></title>
+		
+		<!-- =========================
+			FAV AND TOUCH ICONS  
+		============================== -->
+		<link rel="icon" href="#">
+
+		<!-- =========================
+			STYLESHEETS  
+		============================== -->
+        <!-- FONT AWESOME -->
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <!-- BOOTSTRAP -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <!-- CUSTOM STYLES -->
+        <link rel="stylesheet" type="text/css" href="css/physics.css">
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	    <!--[if lt IE 9]>
+	      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	</head>
+	<body>
+		<!-- ------------------Header----------------------- -->
+		<div id="header" class=" navbar-inverse navbar-static-top">
+			<div class="container">
+				<a href="index.php"><div id="nav-title" class="navbar-brand">AlbertaWilliams.com</div></a>
+				
+				<form class="navbar-form navbar-right">
+					<div class="form-group">
+						<label for="vx">VX</label>
+						<input id="vx" class="form-control" type="text" value="0" readonly>
+						<div id="btn-plus-vx" class="btn btn-default btn-plus">+</div>
+						<div id="btn-minus-vx" class="btn btn-default btn-minus">-</div>
+						<label for="vy">VY</label>
+						<input id="vy" class="form-control" type="text" value="0" readonly>
+						<div id="btn-plus-vy" class="btn btn-default btn-plus">+</div>
+						<div id="btn-minus-vy" class="btn btn-default btn-minus">-</div>
+						<div id="btnStartStop" class="btn btn-default">Start Animation</div>
+						<div id="btnReset" class="btn btn-default">Reset</div>
+					</div>
+				</form>
+			</div>
+		</div><!-- -------------END HEADER----------------- -->
+	
+		<!-- ---------------Game Canvas------------------ -->
+		<svg id="graph" width="100%" >
+			<circle id="circle"  cx="80" cy="312" r="80" stroke-width="4" fill="white" stroke="black" />
+		</svg>
+		<!-- =========================
+			SCRIPTS 
+		============================== -->
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/Physics.js"></script>
+	</body>
+</html>
