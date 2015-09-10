@@ -190,7 +190,7 @@
 				this.setVx(0);
 				this.setVy(0);
 			}
-			console.log(this.getEnergy());
+			//console.log(this.getEnergy());
 			
 		};
 		
