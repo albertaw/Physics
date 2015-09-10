@@ -7,7 +7,8 @@
  * 1. adding objects to the world: Physics.world.add(new Particle())
  */
 
- 
+ var Physics = Physics || {};
+
 Physics.World = (function () {
 
 	var height;	//ground level of screen with origin at top left corner 
@@ -17,7 +18,7 @@ Physics.World = (function () {
 	
 	
 	var	getHeight = function () {
-		this.height = $(window).height() - $('#header').height();
+		this.height = $(window).height();
 		return this.height;
 	};
 	

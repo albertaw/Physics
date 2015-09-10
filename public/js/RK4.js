@@ -44,8 +44,11 @@ Physics.RK4 = (function () {
 			var y = particle.getY();
 			var vx = particle.getVx();
 			var vy = particle.getVy(); 
+			//console.log(particle.getID() + ' x:' + x + ' y:' + y + ' vx:' + vx + ' vy:' + vy);
 			var dt = Physics.Timer.getDt();
+			
 			//var dt = .02;
+			//console.log('dt:' + dt);
 			
 			//a1 = a(p1, v1)
 			var ax = getAx(x, vx);	//equals 0
@@ -90,17 +93,18 @@ Physics.RK4 = (function () {
 			//take the average value of all the computed velocities multiplied by dt 
 			//and add this to the current position.
 			//x(n + 1) = x(n) + (v1 + 2v2 + 2v3 + v4) dt / 6
-			var newX = x + (vx + 2 * vx2 + 2 * vx3 + vx4) * dt / 6;
+			var newX = x + ((vx + 2 * vx2 + 2 * vx3 + vx4) * dt / 6);
+			//console.log('new x:' + newX);
 			particle.setX(newX);
-			var newY = (vy + 2 * vy2 + 2 * vy3 + vy4) * dt / 6;
+			var newY = y + ((vy + 2 * vy2 + 2 * vy3 + vy4) * dt / 6);
 			particle.setY(newY);
 			
 			//take the average value of all the computed accelerations multiplied by dt 
 			//and add this to the current velocity.
 			//v(n + 1) = v(n) + (a1 + 2a2 + 2a3 + a4) dt / 6
-			var newVx = (ax + 2 * ax2 + 2 * ax3 + ax4) * dt / 6;
+			var newVx = vx + ((ax + 2 * ax2 + 2 * ax3 + ax4) * dt / 6);
 			particle.setVx(newVx);
-			var newVy = (ay + 2 * ay2 + 2 * ay3 + ay4) * dt / 6;
+			var newVy = vy + ((ay + 2 * ay2 + 2 * ay3 + ay4) * dt / 6);
 			particle.setVy(newVy);
 			//console.log("vx:" + particle.getVx() + "vy:" + particle.getVy());
 		};

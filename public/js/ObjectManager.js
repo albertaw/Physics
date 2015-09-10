@@ -1,6 +1,6 @@
 // * Manages object creation, deletion, initializtion,
 
-Physics.ParticleManager = (function () {
+Physics.ObjectManager = (function () {
 	
 	var particles = {};		 //maps IDs to game objects
 	var nextID = 0;			//private static integer begins at zero and is incremented each time an object is added to the manager.
@@ -8,11 +8,11 @@ Physics.ParticleManager = (function () {
 	//assign object an ID, increment nextObjectID, append the object to new objects, 
 	//call the object’s initialize 
 	var add = function (particle) {
-		particle.setID(nextID);	//set first so the circle id can be set?
+		//particle.setID(nextID);	//set first so the circle id can be set?
 		particle.init();
 		particles[particle.getID()] = particle;
 		console.log("ball " + particles[particle.getID()].getID() + " added");
-		nextID++;
+		//nextID++;
 	};
 	
 	//iterates through list of game objects, new objects, and destroyed objects 
@@ -73,7 +73,7 @@ Physics.ParticleManager = (function () {
 	//initializes all properties to default values
 	var init = function () {
 		nextID = 0;
-		add(new Physics.Particle());
+		//add(new Physics.Particle());
 	};
 	
 	//iterates through particles dictionary and calls the draw method on each object
@@ -93,26 +93,31 @@ Physics.ParticleManager = (function () {
 	var update = function () {
 		//updtate change in time 
 		Physics.Timer.calcElapsedTime();
+		//console.log(Physics.Timer.getDt());
 		//calculate next position
 		for (var id in particles) {
-			particles[id].move();	
+			particles[id].move();
+			//Physics.RK4.calcRK4(particles[id]);	
 		}	
 		
 		//detect collisions
+		
 		for (var i = 0; i < length(); i++) {
 			//check each ball for wall collision
 			Physics.CollisionManager.resolveBallFixedPointCollision(particles[i]);	
-			this.numChecks++;
+			//this.numChecks++;
 			//check each ball pair for collision
-			for (var j = i+1; j < length(); j++) {	
-				Physics.CollisionManager.resolveBallToBallCollision(particles[i], particles[j]);
-				this.numChecks++;
-			}
+			//for (var j = i+1; j < length(); j++) {	
+			//	Physics.CollisionManager.resolveBallToBallCollision(particles[i], particles[j]);
+				//this.numChecks++;
+			//}
 		}
+		
 		//reposition objects on screen
 		for (var id in particles) {
 			particles[id].update();		
 		}
+		
 		
 		//calculate energy in system 
 		
@@ -120,18 +125,6 @@ Physics.ParticleManager = (function () {
 		
 	};
 	
-	//test
-	var update2 = function () {
-		particles[0].move();
-		Physics.CollisionManager.resolveBallFixedPointCollision(particles[0]);
-		var circle = document.getElementById(particles[0].getCircleId());
-		circle.setAttribute("cx", particles[0].getX());	//update location on screen
-		circle.setAttribute("cy", particles[0].getY());
-		//particles[0].update();
-	};
-	
-	//for testing the correct number of iterations
-	var numChecks = 0;
 	
 	var cleanup = function () {
 		destroyAllObjects();
@@ -145,7 +138,6 @@ Physics.ParticleManager = (function () {
 		getObjectList: getObjectList,
 		length: length,
 		maxLength: maxLength,
-		numChecks: numChecks,
 		nextID: nextID,
 		init: init,
 		update: update,
@@ -154,4 +146,10 @@ Physics.ParticleManager = (function () {
 	}
 	
 })();
+
+Physics.ObjectManager.add(new Physics.Body());
+Physics.ObjectManager.add(new Physics.Body());
+Physics.ObjectManager.add(new Physics.Body());
+
+
 

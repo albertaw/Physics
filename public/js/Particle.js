@@ -1,5 +1,5 @@
 /********************************************************************
- * PHYSICS.PARTICLE
+ * PARTICLE
  ********************************************************************
  * Provides the blueprint for creating objects that will be used in the world. Object 
  * is modeled after a point particle of uniform density.  Uses the 4th order Runge Kutta 
@@ -13,38 +13,39 @@
  *
  */
 
- var Physics = {};
+ var Physics = Physics || {};
  
- Physics.Particle = (function () {
-	
+ Physics.Body = (function () {
+	var radius = 80;	
 	//private static attribute initialized to -1 so that the first id will be 0 
-	//var nextID = -1;	
+	var nextID = 0;	
 	
 	//private static helper method to generate random numbers for setting x and y position
 	var randomX = function () {
-		var maxX = Physics.World.getWidth() - 80;
+		var maxX = Physics.World.getWidth() - radius;
 		var x = Math.floor(Math.random() * maxX);	//find a number between the length of the radius and wall
-		if(x < 80) {		//if in collision with left edge
-			x = 80;				//reposition to left edge
+		if(x < radius) {		//if in collision with left edge
+			x = radius;				//reposition to left edge
 		}
 		return x;
 	};
 
 	var randomY = function () {
-		var maxY = Physics.World.getHeight() - 80;
+		var maxY = Physics.World.getHeight() - radius;
 		var y = Math.floor(Math.random() * maxY);
-		if(y < 80) {	//if in collision with ceiling
-			y = 80;
+		if(y < radius) {	//if in collision with ceiling
+			y = radius;
 		}
 		return y;
 	};
+
 	
 	//constructor to create new particles
 	return function () {
 		//private attributes 
 		var x, y, vx, vy;
-		var mass;		//default to 1 for easy computation.  Should be initialized in constructor.
-		var radius;	
+		var mass = 1;		//default to 1 for easy computation.  Should be initialized in constructor.
+		var radius = 80;	
 		var energy;			//kinetic energy at any time interval
 		var skipUpdate;		//used if the particle is stationary 
 		var skipDraw;
@@ -53,69 +54,74 @@
 		var circleID;
 			
 		this.getX = function () {
-			return Math.round(this.x);
+			return x;
 		};
 		
 		this.setX = function (xi) {
-			this.x = xi;	//update variable for calculations
+			x = xi;	//update variable for calculations
 		};
 		
 		this.getY = function () {
-			return Math.round(this.y);
+			return y;
 		};
 		
 		this.setY = function (yi) {
-			this.y = yi;
+			y = yi;
 		};
 		
 		this.getVx = function () {
-			return Math.round(this.vx);
+			return vx;
 		};
 		
 		this.setVx = function(vxi) {
-			this.vx = vxi;
+			vx = vxi;
 		};
 		
 		this.getVy = function () {
-			return Math.round(this.vy);
+			return vy;
 		};
 		
 		this.setVy = function (vyi) {
-			this.vy = vyi;
+			vy = vyi;
 		};
 		
 		this.getRadius = function () {
-			return this.radius;
+			return radius;
 		};
 		
 		this.setRadius = function (r) {
-			this.radius = r;
+			radius = r;
 		};
 		
 		this.getEnergy = function () {
-			return Math.round(this.energy);
+			return Math.round(energy);
 		};
+
+		this.setEnergy = function (e) {
+			energy = e;
+		}
 		
 		this.getID = function () {
-			return this.id;
+			return id;
 		}
 		
 		this.setID = function (idNum) {
-			this.id = idNum;
+			id = idNum;
 		};
 		
 		this.getCircleID = function () {
-			return this.circleID;
+			return circleID;
 		};
 		
 		//calculates total mechanical energy at any given time interval using 1/2 m v^2 + mgh 
 		//where m = mass, v = velocity, g = gravity, and h = height or the y value.
 		this.calcEnergy = function () {
 			//find the magnitude of the velocity 
-			var v = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+			var v = Math.sqrt(vx * vx + vy * vy);
 			
 			//Energy = Kinetic Energy + Potential Energy
-			this.energy = (.5 * this.mass * Math.pow(v, 2)) + (this.mass * Physics.World.getG() * -1 * this.y); //multiply by -1 because gravity and height are opposites
+			var e = (.5 * Math.pow(v, 2)) + (Physics.World.getG() * -1 * y); //multiply by -1 because gravity and height are opposites
+			this.setEnergy(e);
 		};
 		
 		//deallocates particle from memory, removes element from world
@@ -127,35 +133,45 @@
 		//takes a particle object and updates position and velocity using specified scheme, 
 		this.move = function () {
 			Physics.RK4.calcRK4(this);
+			//this.update();
 			//console.log("I moved");
 		};
 		
 		//initializes particle properties and draws it
 		this.init = function () {
-			this.x = randomX();
-			this.y = randomY();
-			console.log("x:" + this.getX() + " y:" + this.getY());
-			this.vx = 0;
-			this.vy = 0;
-			this.radius = 80;
-			//this.setID(nextID);
-			this.draw();
-			//console.log("particle initialized");
+			this.setX(randomX());
+			this.setY(randomY());
+			this.setVx(Math.random() * 1000);
+			this.setVy(Math.random() * 1000);
+			this.setID(nextID);
+			this.setEnergy(0);
+			nextID++;
+			this.drawSVG();
+			console.log("particle initialized");
 		};
 		
+		this.drawSVG = function () {
+			//set the circle's attributes to the particle's attributes
+			var circle = document.createElementNS(svgns, 'circle');
+			circle.setAttribute('cx', x);
+			circle.setAttribute('cy', y);
+			circle.setAttribute('r', radius);
+			circle.setAttribute('stroke', 'black');
+			circle.setAttribute('stroke-width', 2);
+			circle.style.fill = "white";
+			//add an id to the circle so that it can be called by id
+			circleID = "circle" + id;
+			circle.setAttribute('id', circleID);
+			document.getElementById("world").appendChild(circle);
+		}
 		//visualizes particle as a circle on the screen
 		this.draw = function () {
 			//set the circle's attributes to the particle's attributes
-			var circle = document.createElementNS(svgns, 'circle');
-			circle.setAttribute('cx', this.getX());
-			circle.setAttribute('cy', this.getY());
-			circle.setAttribute('r', this.getRadius());
-			circle.setAttribute('stroke', 'black');
-			circle.setAttribute('stroke-width', 4);
-			circle.style.fill = "white";
-			//add an id to the circle so that it can be called by id
-			this.circleID = "circle" + this.id;
-			circle.setAttribute('id', this.circleID);
+			var circle = document.createElement('DIV');
+			circle.style.left = this.x;
+			circle.style.top = this.y;
+			circleID = "circle" + id;
+			circle.setAttribute('id', circleID);
 			circle.setAttribute('class', "circle");
 			//add the circle to the svg canvas
 			document.getElementById("world").appendChild(circle);
@@ -165,33 +181,42 @@
 		//setting object prior to animating, or when refreshing.  
 		this.update = function () {
 			
-			document.getElementById(this.circleID).setAttribute('cx', this.getX());
-			document.getElementById(this.circleID).setAttribute('cy', this.getY());
-			console.log("x:" + this.getX() + " y:" + this.getY());
-			console.log("vx:" + this.getVx() + " vy:" + this.getVy());
-			//this.calcEnergy();
+			document.getElementById(circleID).setAttribute('cx', x);
+			document.getElementById(circleID).setAttribute('cy', y);
+			this.calcEnergy();
 			//stopping condition
 			//when energy is below n stop the animation.
-			//if(getEnergy() < 50) {
-				//vx = 0, vy = 0
-			//}
+			if(this.getEnergy() < 50) {
+				this.setVx(0);
+				this.setVy(0);
+			}
+			console.log(this.getEnergy());
+			
 		};
 		
-		//calls particle’s destroy method. Term “cleanup” used for convenience and consistency
+		//calls particleâ€™s destroy method. Term â€œcleanupâ€ used for convenience and consistency
 		//in order to iterate over the cleanup method of all objects and managers
 		this.cleanup = function () {
 			this.destroy();
 		};
 		
-		//this.x = newX;
-		//this.y = newY;
-		//this.vx = newVx;
-		//this.vy = newVy;
-		//nextID++;	//will increment when object is instantiated.  
 		
 	};//end function
 	
 	
 	
 })();	
+/*
+var p = new Physics.Body(); 
+p.init();
+p.setX(80);
+p.setY(80);
+console.log("x:" + p.getX() + " y:" + p.getY() + " vx:" + p.getVx() + " vy:" + p.getVy());
+//var p = new Physics.Body(); 
+//console.log("x:" + p.getX() + " y:" + p.getY() + " vx:" + p.getVx() + " vy:" + p.getVy());
 
+//p.init();
+//p.init();
+//p.init();
+//p.init();
+*/
