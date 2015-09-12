@@ -1,5 +1,5 @@
 /**
- * Manages object creation, deletion, initializtion
+ * Manages object creation and deletion
  * Example: Physics.objectManager.add(circle);
  */
 
@@ -7,14 +7,11 @@
 Physics.objectManager = (function () {
 	
 	var particles = {};		 //maps IDs to game objects
-	var maxLength = 10;		//maximum number of objects that can be stored in particles dictionary
 	//assign object an ID, increment nextObjectID, append the object to new objects, 
 	//call the object�s initialize 
 	var add = function (particle) {
 		particle.draw();
 		particles[particle.getId()] = particle;
-		//console.log("ball " + particles[particle.getId()].getId() + " added");
-		//nextID++;
 	};
 	
 	//iterates through list of game objects, new objects, and destroyed objects 
@@ -58,7 +55,7 @@ Physics.objectManager = (function () {
 	};
 	
 	//returns the number of particles  
-	var length = function () {
+	var getLength = function () {
 		var size = 0
 		for (var id in particles) {
 			if (particles.hasOwnProperty(id)) {
@@ -68,10 +65,6 @@ Physics.objectManager = (function () {
 		return size
 	};
 
-	var getMaxLength = function () {
-		return maxLength;
-	};
-	
 	//initializes all properties to default values
 	var init = function () {
 		nextID = 0;
@@ -104,12 +97,12 @@ Physics.objectManager = (function () {
 		
 		//detect collisions
 		
-		for (var i = 0; i < length(); i++) {
+		for (var i = 0; i < getLength(); i++) {
 			//check each ball for wall collision
 			Physics.CollisionManager.resolveBallFixedPointCollision(particles[i]);	
 			//this.numChecks++;
 			//check each ball pair for collision
-			for (var j = i+1; j < length(); j++) {	
+			for (var j = i+1; j < getLength(); j++) {
 				//Physics.CollisionManager.resolveBallToBallCollision(particles[i], particles[j]);
 				//this.numChecks++;
 			}
@@ -138,12 +131,10 @@ Physics.objectManager = (function () {
 		objectExists: objectExists,
 		getObjectById: getObjectById,
 		getObjectList: getObjectList,
-		length: length,
-		maxLength: maxLength,
+		getLength: getLength,
 		init: init,
 		update: update,
-		cleanup: cleanup,
-		particles: particles
+		cleanup: cleanup
 	}
 	
 })();

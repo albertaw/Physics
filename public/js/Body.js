@@ -6,6 +6,7 @@
  var Physics = Physics || {};
  
  Physics.body = (function () {
+
 	//private static attribute
 	var nextId = 0;
 	
@@ -16,7 +17,7 @@
 		var x = options.x || 0;
 		var y = options.y || 0;
 		var vx = options.vx || 0;
-		var vy = options.vy ||0;
+		var vy = options.vy || 0;
 		var mass = options.mass || 1;
 		var radius = options.radius || 80;
 		var id;
