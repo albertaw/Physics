@@ -44,7 +44,7 @@ Physics.RK4 = (function () {
 			var y = particle.getY();
 			var vx = particle.getVx();
 			var vy = particle.getVy(); 
-			//console.log(particle.getID() + ' x:' + x + ' y:' + y + ' vx:' + vx + ' vy:' + vy);
+			//console.log(particle.getId() + ' x:' + x + ' y:' + y + ' vx:' + vx + ' vy:' + vy);
 			var dt = Physics.Timer.getDt();
 			
 			//var dt = .02;

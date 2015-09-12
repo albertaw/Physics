@@ -1,17 +1,19 @@
-// * Manages object creation, deletion, initializtion,
+/**
+ * Manages object creation, deletion, initializtion
+ * Example: Physics.objectManager.add(circle);
+ */
 
-Physics.ObjectManager = (function () {
+
+Physics.objectManager = (function () {
 	
 	var particles = {};		 //maps IDs to game objects
-	var nextID = 0;			//private static integer begins at zero and is incremented each time an object is added to the manager.
 	var maxLength = 10;		//maximum number of objects that can be stored in particles dictionary
 	//assign object an ID, increment nextObjectID, append the object to new objects, 
-	//call the object’s initialize 
+	//call the objectï¿½s initialize 
 	var add = function (particle) {
-		//particle.setID(nextID);	//set first so the circle id can be set?
-		particle.init();
-		particles[particle.getID()] = particle;
-		console.log("ball " + particles[particle.getID()].getID() + " added");
+		particle.draw();
+		particles[particle.getId()] = particle;
+		//console.log("ball " + particles[particle.getId()].getId() + " added");
 		//nextID++;
 	};
 	
@@ -24,7 +26,7 @@ Physics.ObjectManager = (function () {
 		}
 	};
 	
-	//looks in the particles dictionary and calls the particle’s cleanup method
+	//looks in the particles dictionary and calls the particleï¿½s cleanup method
 	var destroyObjectById = function (id) {
 		if (objectExists(id)) {
 			particles[id].cleanup();	//destroy the object
@@ -107,10 +109,10 @@ Physics.ObjectManager = (function () {
 			Physics.CollisionManager.resolveBallFixedPointCollision(particles[i]);	
 			//this.numChecks++;
 			//check each ball pair for collision
-			//for (var j = i+1; j < length(); j++) {	
-			//	Physics.CollisionManager.resolveBallToBallCollision(particles[i], particles[j]);
+			for (var j = i+1; j < length(); j++) {	
+				//Physics.CollisionManager.resolveBallToBallCollision(particles[i], particles[j]);
 				//this.numChecks++;
-			//}
+			}
 		}
 		
 		//reposition objects on screen
@@ -138,7 +140,6 @@ Physics.ObjectManager = (function () {
 		getObjectList: getObjectList,
 		length: length,
 		maxLength: maxLength,
-		nextID: nextID,
 		init: init,
 		update: update,
 		cleanup: cleanup,
@@ -146,10 +147,4 @@ Physics.ObjectManager = (function () {
 	}
 	
 })();
-
-Physics.ObjectManager.add(new Physics.Body());
-Physics.ObjectManager.add(new Physics.Body());
-Physics.ObjectManager.add(new Physics.Body());
-
-
 

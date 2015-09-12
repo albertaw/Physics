@@ -32,7 +32,7 @@
 		currentTime = date.getTime();
 		oldTime = currentTime;
 		if (timer == null) {
-			timer = setInterval(Physics.ObjectManager.update, millisecondsPerFrame);
+			timer = setInterval(Physics.objectManager.update, millisecondsPerFrame);
 			console.log('timer initialized');
 		}
 	};
@@ -67,5 +67,3 @@
 	
 })();	
 
-Physics.Timer.init();
-	
