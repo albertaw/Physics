@@ -123,12 +123,12 @@
 		
 		//takes a particle object and updates position and velocity using specified scheme, 
 		this.move = function () {
-			Physics.RK4.calcRK4(this);
+			Physics.integrators.calcRK4(this);
 			//this.update();
 			//console.log("I moved");
 		};
 
-		function drawSvg() {
+		function drawSvg () {
 			//set the circle's attributes to the particle's attributes
 			var circle = document.createElementNS(svgns, 'circle');
 
@@ -144,6 +144,17 @@
 			//console.log('circle drawn');
 		}
 
+		function drawDom () {
+			var circle = document.createElement('div');
+			circle.id = circleId;
+			circle.className = 'circle';
+			circle.style.left = x + 'px';
+			circle.style.top = y + 'px';
+			circle.style.width = 2 * radius + 'px';
+			circle.style.height = 2 * radius + 'px';
+			document.getElementById("world").appendChild(circle);
+		}
+
 		this.draw = function () {
 			drawSvg();
 		}
@@ -156,6 +167,8 @@
 			
 			document.getElementById(circleId).setAttribute('cx', x);
 			document.getElementById(circleId).setAttribute('cy', y);
+			//document.getElementById(circleId).style.left = x + 'px';
+			//document.getElementById(circleId).style.top = y + 'px';
 
 			this.calcEnergy();
 			//stopping condition
@@ -184,4 +197,4 @@
 	};//end function
 	
 	
-})();	
+})();

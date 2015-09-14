@@ -2,6 +2,7 @@
  * Physical properties of the environment
  */
 
+var Physics = Physics || {};
 Physics.world = (function () {
 
 	var height;	//ground level of screen with origin at top left corner 
@@ -62,7 +63,6 @@ Physics.world = (function () {
 		update: update,
 		cleanup: cleanup
 		
-	}
+	};
+
 })();
-
-

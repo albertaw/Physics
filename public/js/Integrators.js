@@ -1,17 +1,6 @@
-/********************************************************************
- * FOURTH ORDER RUNGE KUTTA
- ********************************************************************
- * calculates the new position by using the initial position and the 
- * velocity found from the previous iteration of calculations. The 
- * velocity is found by using the initial velocity plus the acceleration 
- * calculated from the previous iteration. Acceleration is a function of 
- * the position and velocity. It is calculated with new values of x, y vx 
- * and vy at each iteration.  
- */
 
-Physics.RK4 = (function () {
-		
-		
+var Physics = Physics || {};
+Physics.integrators = (function () {
 		/**
 		 * Calculates the sum of forces acting on the particle during a given time
 		 * interval in the x direction and computes acceleration using Newton's Second
@@ -37,8 +26,17 @@ Physics.RK4 = (function () {
 			
 			return Physics.world.getG();
 		};
-		
-		
+
+		/**
+		 * FOURTH ORDER RUNGE KUTTA
+		 *
+		 * calculates the new position by using the initial position and the
+		 * velocity found from the previous iteration of calculations. The
+		 * velocity is found by using the initial velocity plus the acceleration
+		 * calculated from the previous iteration. Acceleration is a function of
+		 * the position and velocity. It is calculated with new values of x, y vx
+		 * and vy at each iteration.
+		 */
 		var calcRK4 = function (particle) {
 			var x = particle.getX();
 			var y = particle.getY();
@@ -110,7 +108,7 @@ Physics.RK4 = (function () {
 		};
 		
 		var init = function () {
-			console.log("RK4 initialized");
+			console.log("integrators initialized");
 		};
 		
 		return {
@@ -119,6 +117,3 @@ Physics.RK4 = (function () {
 		}
 		
 })();
-	
-
-	

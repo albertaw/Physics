@@ -3,7 +3,8 @@
  * Sets particle's position to the floor, ceiling, or wall position if in contact.
  * Ex. resolveBallFixedPointCollision(Physics.ParticleManager.particles[i]);
  */
-	 
+
+var Physics = Physics || {};
 Physics.behaviors = (function () {
 
 	//factor between 0 and 1 to account for energy loss in collision.
@@ -77,8 +78,8 @@ Physics.behaviors = (function () {
 				ball1.setVy(uy2);
 				ball2.setVx(ux1);
 				ball2.setVy(uy1);
-				console.log('x1: ' + sx1 + ' y1:' + sy1 + ' x2:' + sx2 + ' y2:' + sy2);
-				/*Clock.stop();
+				/*console.log('x1: ' + sx1 + ' y1:' + sy1 + ' x2:' + sx2 + ' y2:' + sy2);
+				Clock.stop();
 				console.log('embedded');
 				setTimeout(function () {
 					Clock.start(Physics.objectManager.update);

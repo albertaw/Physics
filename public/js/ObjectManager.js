@@ -3,7 +3,7 @@
  * Example: Physics.objectManager.add(circle);
  */
 
-
+var Physics = Physics || {};
 Physics.objectManager = (function () {
 	
 	var particles = [];		 //maps IDs to game objects
@@ -89,7 +89,7 @@ Physics.objectManager = (function () {
 		for (var id in particles) {
 			particles[id].move();
 			Physics.behaviors.resolveBallFixedPointCollision(particles[id]);
-			//Physics.RK4.calcRK4(particles[id]);	
+			//Physics.integrators.calcRK4(particles[id]);
 		}
 
 		//iterates through particles dictionary, and compares new position of each unique object pair
@@ -136,4 +136,3 @@ Physics.objectManager = (function () {
 	}
 	
 })();
-

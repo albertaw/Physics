@@ -63,5 +63,4 @@ var Clock = (function () {
 		
 	}
 	
-})();	
-
+})();

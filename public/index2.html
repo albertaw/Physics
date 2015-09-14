@@ -23,19 +23,19 @@
 		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <!-- BOOTSTRAP -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <!-- CUSTOM STYLES -->
-        <link rel="stylesheet" type="text/css" href="css/physics.css">
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	    <!--[if lt IE 9]>
-	      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	    <![endif]-->
+
 	    <style type="text/css">
 			#world {
-				position: absolute;
+				position: fixed;
 				top: 0;
 				left: 0;
+
+			}
+			.circle {
+				position: absolute;
+				border: 2px solid #000;
+				border-radius: 100%;
+				background-color: #fff;
 			}
 	    </style>
 	</head>
@@ -59,11 +59,12 @@
 						<div id="btnReset" class="btn btn-default">Reset</div>
 					</div>
 				</form>
-			</div>-->
-		</div>
+			</div>
+		</div>-->
 	
 		<!-- Game Canvas -->
 		<svg id="world" class="world" width="100%" height="100%">
+
 		</svg>
 		<!-- =========================
 			SCRIPTS 
@@ -74,32 +75,8 @@
 		<script type="text/javascript" src="js/Behaviors.js"></script>
 		<script type="text/javascript" src="js/Body.js"></script>
 		<script type="text/javascript" src="js/ObjectManager.js"></script>
-		<script type="text/javascript" src="js/RK4.js"></script>
+		<script type="text/javascript" src="js/Integrators.js"></script>
 		<script type="text/javascript" src="js/Clock.js"></script>
-		<script>
-			Physics.objectManager.add(new Physics.body({
-				x: Physics.util.randomX(),
-				y: Physics.util.randomY(),
-				vx: 200,
-				vy: -100
-			}));
-			Physics.objectManager.add(new Physics.body({
-				x: Physics.util.randomX(),
-				y: Physics.util.randomY(),
-				vx: -300,
-				vy: 150
-			}));
-
-			Physics.objectManager.add(new Physics.body({
-				x: Physics.util.randomX(),
-				y: Physics.util.randomY(),
-				vx: 350,
-				vy: 250
-			}));
-
-			Physics.objectManager.init();
-			Clock.start(Physics.objectManager.update);
-
-		</script>
+		<script type="text/javascript" src="js/main.js"></script>
 	</body>
 </html>

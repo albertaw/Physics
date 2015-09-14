@@ -16,27 +16,27 @@
 	 *******************************************/
 	var x;		//current/initial positions 
 	var y;
-	var x2;		//value used in 2nd step of RK4 calculations
+	var x2;		//value used in 2nd step of integrators calculations
 	var y2;
-	var x3;		//value used in 3rd step of RK4 calculations
+	var x3;		//value used in 3rd step of integrators calculations
 	var y3;
-	var x4;		//value used in 4th step of RK4 calculations
+	var x4;		//value used in 4th step of integrators calculations
 	var y4;
 	var vx;		//current/initial velocities
 	var vy;
-	var vx2;		//value used in 2nd step of RK4 calculations
+	var vx2;		//value used in 2nd step of integrators calculations
 	var vy2;
-	var vx3;		//value used in 3rd step of RK4 calculations
+	var vx3;		//value used in 3rd step of integrators calculations
 	var vy3;
-	var vx4;		//value used in 4th step of RK4 calculations
+	var vx4;		//value used in 4th step of integrators calculations
 	var vy4;
 	var ax;		//acceleration calculated from initial position and velocity
 	var ay;
-	var ax2;		//value used in 2nd step of RK4 calculations
+	var ax2;		//value used in 2nd step of integrators calculations
 	var ay2;
-	var ax3;		//value used in 3rd step of RK4 calculations
+	var ax3;		//value used in 3rd step of integrators calculations
 	var ay3;
-	var ax4;		//value used in 4th step of RK4 calculations
+	var ax4;		//value used in 4th step of integrators calculations
 	var ay4;
 	var mass = 1;	//default to 1 for easy computation.  Should be initialized in constructor.
 	var g = 0;		//force of gravity, downward is positive relative to computer screen
@@ -585,7 +585,7 @@ Physics.world = (function () {
 	}
 	
 	/** Set initial position and velocity to default or input value.  Set graph of energy 
-	 * to default values.  Set all RK4 values to null. Set time and energy to zero.  
+	 * to default values.  Set all integrators values to null. Set time and energy to zero.
 	  * Clear all intervals and remove plotted points. Update data points in table.  
 	 */
 	function handleReset() {
