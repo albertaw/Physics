@@ -59,6 +59,10 @@
 		this.setVy = function (vyi) {
 			vy = vyi;
 		};
+
+		this.getV = function () {
+			return Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
+		};
 		
 		this.getRadius = function () {
 			return radius;
@@ -107,7 +111,7 @@
 			var v = Math.sqrt(vx * vx + vy * vy);
 			
 			//Energy = Kinetic Energy + Potential Energy
-			var e = (.5 * Math.pow(v, 2)) + (Physics.World.getG() * -1 * y); //multiply by -1 because gravity and height are opposites
+			var e = (.5 * Math.pow(v, 2)) + (Physics.world.getG() * -1 * y); //multiply by -1 because gravity and height are opposites
 			this.setEnergy(e);
 		};
 		
@@ -123,11 +127,11 @@
 			//this.update();
 			//console.log("I moved");
 		};
-		
 
-		this.draw = function () {
+		function drawSvg() {
 			//set the circle's attributes to the particle's attributes
 			var circle = document.createElementNS(svgns, 'circle');
+
 			circle.setAttribute('cx', x);
 			circle.setAttribute('cy', y);
 			circle.setAttribute('r', radius);
@@ -135,9 +139,16 @@
 			circle.setAttribute('stroke-width', 2);
 			circle.style.fill = "white";
 			circle.setAttribute('id', circleId);
+
 			document.getElementById("world").appendChild(circle);
 			//console.log('circle drawn');
 		}
+
+		this.draw = function () {
+			drawSvg();
+		}
+
+
 
 		// draws object, updates momentum and energy on every keyframe or when 
 		//setting object prior to animating, or when refreshing.  
@@ -145,13 +156,14 @@
 			
 			document.getElementById(circleId).setAttribute('cx', x);
 			document.getElementById(circleId).setAttribute('cy', y);
+
 			this.calcEnergy();
 			//stopping condition
 			//when energy is below n stop the animation.
-			if(this.getEnergy() < 50) {
-				this.setVx(0);
-				this.setVy(0);
-			}
+			//if(this.getEnergy() < 30) {
+			//	this.setVx(0);
+			//	this.setVy(0);
+			//}
 			//console.log(this.getEnergy());
 			
 		};

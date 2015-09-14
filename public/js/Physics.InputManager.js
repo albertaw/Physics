@@ -79,11 +79,11 @@ Physics.InputManager = (function () {
 		if ($('#btnStartStop').attr('src') == "img/play.png") {
 			$('#btnStartStop').attr('src', "img/pause.png")	//change to pause button
 			//start animation
-			Physics.Timer.init();
+			Physics.Clock.init();
 		} else {
 			$('#btnStartStop').attr('src', "img/play.png")	//change to play button
 			//pause animation
-			Physics.Timer.cleanup();
+			Physics.Clock.cleanup();
 		}
 	};
 	
@@ -122,7 +122,7 @@ Physics.InputManager = (function () {
 		});
 		
 		$(window).resize(function () {
-			Physics.World.update();
+			Physics.world.update();
 		
 		});
 

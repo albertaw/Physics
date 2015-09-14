@@ -64,7 +64,6 @@
 	
 		<!-- Game Canvas -->
 		<svg id="world" class="world" width="100%" height="100%">
-			
 		</svg>
 		<!-- =========================
 			SCRIPTS 
@@ -72,16 +71,34 @@
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="js/Util.js"></script>
 		<script type="text/javascript" src="js/World.js"></script>
-		<script type="text/javascript" src="js/CollisionManager.js"></script>
+		<script type="text/javascript" src="js/Behaviors.js"></script>
 		<script type="text/javascript" src="js/Body.js"></script>
 		<script type="text/javascript" src="js/ObjectManager.js"></script>
 		<script type="text/javascript" src="js/RK4.js"></script>
-		<script type="text/javascript" src="js/Timer.js"></script>
+		<script type="text/javascript" src="js/Clock.js"></script>
 		<script>
-			Physics.objectManager.add(new Physics.body(Physics.util.randomX(), Physics.util.randomY(), 100, -100));
-			Physics.objectManager.add(new Physics.body(Physics.util.randomX(), Physics.util.randomY(), 50, 50));
-			Physics.objectManager.add(new Physics.body(Physics.util.randomX(), Physics.util.randomY(), -200, 200));
-			Physics.Timer.init();
+			Physics.objectManager.add(new Physics.body({
+				x: Physics.util.randomX(),
+				y: Physics.util.randomY(),
+				vx: 200,
+				vy: -100
+			}));
+			Physics.objectManager.add(new Physics.body({
+				x: Physics.util.randomX(),
+				y: Physics.util.randomY(),
+				vx: -300,
+				vy: 150
+			}));
+
+			Physics.objectManager.add(new Physics.body({
+				x: Physics.util.randomX(),
+				y: Physics.util.randomY(),
+				vx: 350,
+				vy: 250
+			}));
+
+			Physics.objectManager.init();
+			Clock.start(Physics.objectManager.update);
 
 		</script>
 	</body>

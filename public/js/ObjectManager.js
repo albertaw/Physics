@@ -6,12 +6,12 @@
 
 Physics.objectManager = (function () {
 	
-	var particles = {};		 //maps IDs to game objects
+	var particles = [];		 //maps IDs to game objects
 	//assign object an ID, increment nextObjectID, append the object to new objects, 
 	//call the object�s initialize 
 	var add = function (particle) {
 		particle.draw();
-		particles[particle.getId()] = particle;
+		particles.push(particle);
 	};
 	
 	//iterates through list of game objects, new objects, and destroyed objects 
@@ -67,52 +67,50 @@ Physics.objectManager = (function () {
 
 	//initializes all properties to default values
 	var init = function () {
-		nextID = 0;
-		//add(new Physics.Particle());
+		//update();
+
 	};
 	
 	//iterates through particles dictionary and calls the draw method on each object
 	//helper function for update
 	var draw = function () {
+
 		for (var id in particles) {
 			particles[id].draw();
 		}
 	}; 
 	
-	//iterates through particles dictionary, and compares new position of each unique object pair
-	//Then compares particle's new position to the world's boundaries. Example for 4 objects:
-	//[0][1], [0][2], [0][3],[0][wall] 
-	//[1][2], [1][3], [1][wall]
-	//[2][3], [2][wall]
-	//[3][wall]
+
 	var update = function () {
-		//updtate change in time 
-		Physics.Timer.calcElapsedTime();
-		//console.log(Physics.Timer.getDt());
+		//updtate change in time
+		Clock.calcElapsedTime();
+		//console.log(Physics.Clock.getDt());
 		//calculate next position
 		for (var id in particles) {
 			particles[id].move();
+			Physics.behaviors.resolveBallFixedPointCollision(particles[id]);
 			//Physics.RK4.calcRK4(particles[id]);	
-		}	
-		
-		//detect collisions
-		
-		for (var i = 0; i < getLength(); i++) {
-			//check each ball for wall collision
-			Physics.CollisionManager.resolveBallFixedPointCollision(particles[i]);	
-			//this.numChecks++;
+		}
+
+		//iterates through particles dictionary, and compares new position of each unique object pair
+		//Then compares particle's new position to the world's boundaries. Example for 4 objects:
+		//[0][1], [0][2], [0][3],[0][wall]
+		//[1][2], [1][3], [1][wall]
+		//[2][3], [2][wall]
+		//[3][wall]
+		for (var i = 0; i < getLength() - 1; i++) {
 			//check each ball pair for collision
 			for (var j = i+1; j < getLength(); j++) {
-				//Physics.CollisionManager.resolveBallToBallCollision(particles[i], particles[j]);
-				//this.numChecks++;
+				Physics.behaviors.resolveBallToBallCollision(particles[i], particles[j]);
 			}
+			//check each ball for wall collision
+
 		}
-		
+
 		//reposition objects on screen
-		for (var id in particles) {
-			particles[id].update();		
+		for (var i = 0; i < getLength(); i++) {
+			particles[i].update();
 		}
-		
 		
 		//calculate energy in system 
 		

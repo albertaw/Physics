@@ -35,7 +35,7 @@ Physics.RK4 = (function () {
 		 */
 		var getAy = function (y, vy){
 			
-			return 0;
+			return Physics.world.getG();
 		};
 		
 		
@@ -45,7 +45,7 @@ Physics.RK4 = (function () {
 			var vx = particle.getVx();
 			var vy = particle.getVy(); 
 			//console.log(particle.getId() + ' x:' + x + ' y:' + y + ' vx:' + vx + ' vy:' + vy);
-			var dt = Physics.Timer.getDt();
+			var dt = Clock.getDt();
 			
 			//var dt = .02;
 			//console.log('dt:' + dt);

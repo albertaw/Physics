@@ -1,11 +1,9 @@
-/********************************************************************
- * PHYSICS.TIMER
- ********************************************************************
+/**
  * Handles timekeeping for world and objects.   Whatever is calculating 
  * the move would use Physics.timer.getDt to get change in time 
  */
 
- Physics.Timer = (function () {
+var Clock = (function () {
 	
 	var oldTime = 0;		//the time in milliseconds before the execution of the interval
 	var currentTime = 0;	//the time in milliseconds once the interval executes its command
@@ -27,12 +25,12 @@
 		return dt;
 	};
 	
-	var start = function () {
+	var start = function (fn) {
 		var date = new Date();
 		currentTime = date.getTime();
 		oldTime = currentTime;
 		if (timer == null) {
-			timer = setInterval(Physics.objectManager.update, millisecondsPerFrame);
+			timer = setInterval(fn, millisecondsPerFrame);
 			console.log('timer initialized');
 		}
 	};

@@ -61,4 +61,3 @@ test('circleId', function () {
 	equal(p.getCircleId(), 'circle', 'Expect circle id to equal circle');
 });
 
-

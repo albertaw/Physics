@@ -1,19 +1,13 @@
-/********************************************************************
- * PHYSICS.WORLD
- *******************************************************************
- * Provides services to the screen to render the world and its objects.  
- * Manages object creation, deletion, initializtion, and event listeners.
- * Manages the timer to handle animating objects.???  Example use: 
- * 1. adding objects to the world: Physics.world.add(new Particle())
+/**
+ * Physical properties of the environment
  */
 
- var Physics = Physics || {};
-
-Physics.World = (function () {
+Physics.world = (function () {
 
 	var height;	//ground level of screen with origin at top left corner 
 	var width;
-	var g;			//force of gravity, downward is positive relative to computer screen
+	var g = 0;			//force of gravity, downward is positive relative to computer screen
+	var friction;
 	var world = document.getElementById("world");
 	
 	
@@ -29,14 +23,14 @@ Physics.World = (function () {
 	};
 
 	var	getG = function () {
-		return this.g;
+		return g;
 	};
 
 	var	setG = function (g) {
 		this.g = g;
 	};
 
-	var init = function () {
+	var init = function (options) {
 		this.g = 0;
 		this.friction = 0;
 		this.draw();
