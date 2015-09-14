@@ -66,7 +66,7 @@ Physics.behaviors = (function () {
 			sx2 = - ux2 / Math.abs(ux1 - ux2) * l,
 			sy2 = - uy2 / Math.abs(uy1 - uy2) * l;
 
-			if (d < r) {
+			if (d <= r) {
 				//reposition balls
 				ball1.setX(x1 + sx1);
 				ball1.setY(y1 + sy1);
