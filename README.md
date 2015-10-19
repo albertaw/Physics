@@ -5,6 +5,7 @@ A framework for creating physics-based animations
 ```bash
 git clone git@github.com:albertaw/Physics.git
 npm install
+cd physics
 ```
 
 ### Launch app
