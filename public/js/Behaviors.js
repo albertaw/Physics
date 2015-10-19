@@ -4,7 +4,6 @@
  * Ex. resolveBallFixedPointCollision(Physics.ParticleManager.particles[i]);
  */
 
-var Physics = Physics || {};
 Physics.behaviors = (function () {
 
 	//factor between 0 and 1 to account for energy loss in collision.

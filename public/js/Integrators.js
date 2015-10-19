@@ -1,5 +1,4 @@
 
-var Physics = Physics || {};
 Physics.integrators = (function () {
 		/**
 		 * Calculates the sum of forces acting on the particle during a given time

@@ -3,8 +3,6 @@
  * Example: var p = new Physics.body(1, 2, 0, 0)
  */
 
- var Physics = Physics || {};
- 
  Physics.body = (function () {
 
 	//private static attribute

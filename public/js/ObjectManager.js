@@ -3,7 +3,6 @@
  * Example: Physics.objectManager.add(circle);
  */
 
-var Physics = Physics || {};
 Physics.objectManager = (function () {
 	
 	var particles = [];		 //maps IDs to game objects

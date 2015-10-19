@@ -2,16 +2,13 @@
  * Physical properties of the environment
  */
 
-var Physics = Physics || {};
 Physics.world = (function () {
 
 	var height;	//ground level of screen with origin at top left corner 
 	var width;
 	var g = 0;			//force of gravity, downward is positive relative to computer screen
 	var friction;
-	var world = document.getElementById("world");
-	
-	
+
 	var	getHeight = function () {
 		this.height = $(window).height();
 		return this.height;
@@ -39,6 +36,8 @@ Physics.world = (function () {
 	};
 		
 	var	draw = function () {
+		var world = document.getElementById("world");
+
 		//set style elements
 		world.setAttribute("width", "100%");
 		world.setAttribute("height", getHeight());
