@@ -16,7 +16,7 @@ module.exports = function(grunt) {
                     'public/js/Body.js',
                     'public/js/ObjectManager.js',
                     'public/js/Integrators.js',
-                    'public/js/Clock.js',
+                    'public/js/Clock.js'
                 ],
                 dest: 'public/js/Physics.js'
             },
