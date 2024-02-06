@@ -2,7 +2,7 @@
 A framework for creating physics-based animations. 
 Demo can be viewed here: https://alberta-physics.herokuapp.com
 
-### Installation
+## Installation
 
 ### Pre conditions
 
