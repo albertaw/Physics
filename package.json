@@ -18,7 +18,8 @@
   "homepage": "https://github.com/albertaw/Physics",
   "dependencies": {
     "express": "^4.13.3",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -1,4 +1,5 @@
 var express = require('express');
+var path = require('path');
 
 var app = express();
 
@@ -9,8 +10,8 @@ app.set('view engine', 'jade');
 //to serve the js and css files
 app.use(express.static(__dirname +'/public'));
 
-app.get('/', function (request, response) {
-	response.render('index', {title: 'Physics sim'});
+app.get('*', (req, res) => {                       
+    res.sendFile(path.resolve(__dirname, './public/js', 'index.html'));                               
 });
 
 app.listen(app.get('port'), function () {
