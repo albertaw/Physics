@@ -36,3 +36,11 @@ node index
 ### Open app
 
 Navigate your browser window to `localhost:3000` to see a demo
+
+### ROADMAP
+
+- Add friction to world
+- Make objects draggable
+- Allow multiple users to enter world
+- Match users to worlds
+- Invite users to a world
